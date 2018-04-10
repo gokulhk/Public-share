@@ -21,7 +21,6 @@ Feature Extraction -> Sentiment Analysis: n-grams
 note right of Sentiment Analysis: Positive & Negative Sentiment Score
 note right of Sentiment Analysis: POS tagging
 Sentiment Analysis -> Feature Extraction : Pos-vectors 
-note right of Feature Extraction: Sentiment Analysis
 note right of Feature Extraction: Replace Internet Slang
 note right of Feature Extraction: Capitalization
 Feature Extraction -> Classifier algorithm : Feature Vectors
