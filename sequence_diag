@@ -1,0 +1,32 @@
+#go to the below website and paste it  
+#https://www.websequencediagrams.com/
+----------------------------------------------------------------------------------------
+
+title Sarcasm Detector Sequence
+
+End User->Flask: User Sentence
+Flask -> Pre-Processing :User Sentence 
+note right of Pre-Processing: Remove all #tags
+note right of Pre-Processing: Remove all http links
+note right of Pre-Processing: removes any @tagging
+note right of Pre-Processing: remove duplicates
+Pre-Processing -> Topic Modeling : Pre-processed sentence 
+note right of Topic Modeling: Remove Stop Words
+note right of Topic Modeling: Tokenization
+note right of Topic Modeling: Stemming
+note right of Topic Modeling: LDA Classification
+Topic Modeling -> Feature Extraction : Classified Sentence 
+note right of Feature Extraction: n-grams
+Feature Extraction -> Sentiment Analysis: n-grams
+note right of Sentiment Analysis: Positive & Negative Sentiment Score
+note right of Sentiment Analysis: POS tagging
+Sentiment Analysis -> Feature Extraction : Pos-vectors 
+note right of Feature Extraction: Sentiment Analysis
+note right of Feature Extraction: Replace Internet Slang
+note right of Feature Extraction: Capitalization
+Feature Extraction -> Classifier algorithm : Feature Vectors
+note right of Classifier algorithm:  calculate Sarcasm Score
+Classifier algorithm -> Flask : Sarcasm Score
+Flask->End User: Sarcasm Score 
+
+---------------------------------------------------------------------------------------------
