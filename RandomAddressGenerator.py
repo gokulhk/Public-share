@@ -1,7 +1,7 @@
 # Public-share
 import random
 
-country=["India","USA"] #only India and USA
+country=["India","USA"] #only India and USA - add country names as you wish
 
 India=["Tamil Nadu/Chennai,600001?Coimbatore,641001?Tirupur,641601?Erode,638001?Vellore,635852",
       "Karnataka/Banglore,560001?Belgaum,560731?Mysuru,570027?Kolar,560321?Udupi,570335",
@@ -18,9 +18,14 @@ USA=["Alaska/Akiak,99552?Big Lake,99652?Chicken,99732?Circle,99733?Clear,99704",
       "Colorado/Carr,80612?Fleming,80728?Idalia,80735?Parachute,81635?Paradox,81429",
       "Connecticut/Brookfield,6804?Derby,6418?Greenwich,6836?Madison,6443?Oxford,6478",
       "Hawaii/Aiea,96701?Hilo,96720?Honolulu,96801?Koloa,96756?Pearl Harbor,96860"]
+
+
 i = 0 
-print("State,City,Pincode,Country") #headers
-n = 500 #change this value to change number of rows being generated
+
+print("State,City,Pincode,Country") #headers for output
+
+n = 500 #controls count of rows being generated
+
 while i<n :
     r=random.randrange(0,2)
     r1=random.randrange(0,7)
