@@ -1,0 +1,15 @@
+Linear Search :
+===============
+	=> Applicable on both sorted and unsorted list.
+	=> List can be Array or Linked List.
+	=> T(n) = O(n)
+        => S(n) = O(1) - Iterative Implementation
+        => S(n) = O(n) - Recurive Implementation
+
+Binary Search:
+==============
+	=> Applicable only on Sorted List.
+	=> List can only be Array.
+	=> T(n) = O(lg n)
+	=> S(n) = O(1) - Iterative Implementation
+	=> S(n) = O(lg n) - Recurive Implementation
