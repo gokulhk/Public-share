@@ -1,187 +1,79 @@
-#include<iostream>
+#include <iostream>
+#include <map>
+#include <list>
+#include <queue>
 
 using namespace std;
 
-class Queue{ //array implementation
 
-private:
-	int front, rear, count, capacity;
-	int *queue;
+template<typename T> //to make code more generic and accept graphs of wide range of datatypes 
+
+class Graph{
+
+	map< T, list<T>> adjacency_list;
 
 public:
-	Queue(int capacity){
-		queue = new int[capacity];
-		count = 0;
-		front = 0;
-		rear = -1;
-		this->capacity = capacity;
+
+	void addEdge(T start_vertex, T end_vertex){
+
+		adjacency_list[start_vertex].push_back(end_vertex);
+
+		//assuming all edges are bidirectional and non weighted.
+		adjacency_list[end_vertex].push_back(start_vertex);
 	}
 
-	void enqueue(int data){
+	void dfs_helper(T current_vertex, map<T, bool> &visited){
 
-		//overflow check
-		if( count == capacity){
-			cout<<"Queue is already full! enqueue ops failed."<<endl;
-			return;
+		//mark current vertex as visited 
+		visited[current_vertex] = true;
+ 
+		//visited all its neighbours if not visited and dive in!
+		for(T nbr : adjacency_list[current_vertex]){
+
+			if( ! visited[nbr]){
+				dfs_helper(nbr, visited);
+			}
 		}
 
-		 rear = (rear + 1) % capacity;
-		 queue[rear] = data;
-		 ++count;
+		//this point of code indicate all child nodes of current node is visited so print current and return to parent.
+		cout<<current_vertex<< " ";
 	}
 
-	int dequeue(){
-		
-		//underflow check
-		if(count == 0){
-			cout<<"Queue is already empty! dequeue ops failed."<<endl;
-			exit(EXIT_FAILURE);
+	void dfs(T source_vertex){
+
+		//only map DS is used to keep track of visited vertices and not fall in infinite recursion
+		map<T, bool> visited;
+
+		//intialise visited of all vertices as False
+		for(auto node : adjacency_list){
+			T current_vertex = node.first;
+			visited[current_vertex] = false;
 		}
 
-		int data = queue[front];
-		front = (front + 1) % capacity;
-		--count;
-		return data;
+		//call dfs_helper to do DFS
+		dfs_helper(source_vertex, visited);
+
 	}
 
-	int size(){ return count; }
 };
 
 
-void dfs(int[] , int**, int, int);
-void dfsHelper(int[], int**, bool[], int, int);
-void bfs(int[] , int**, int, int);
-void bfsHelper(int[], int**, bool[], Queue&, int, int);
-
 int main(){
 
-	//get node count
-	int nodeCount;
-	cout<<"Enter node count: ";
-	cin>>nodeCount;
+	Graph<int> g;
 
-	//to store node data
-	int nodes[nodeCount]; 
-
-	//get node data 
-	for(int i=0; i<nodeCount; ++i){
-		cin>>nodes[i];
-	}
-
-	//adjacency matrix to represent edges
-	int **adjacency = new int*[nodeCount];
-	for (int i = 0; i < nodeCount; ++i)
-	{
-		adjacency[i] = new int[nodeCount];
-	}
-
-	int edgeCount, nodex, nodey;
-	cout<<"Enter edgeCount : ";
-	cin>>edgeCount;
-
-	//intialise adjacency matrix
-	for (int i = 0; i < nodeCount ; ++i)
-	{
-		for (int j = 0; j < nodeCount ; ++j)
-		{
-			adjacency[i][j] = 0;
-		}
-	}
+	//add all edges of graph
+	g.addEdge(0,1);
+	g.addEdge(0,3);
+	g.addEdge(1,2);
+	g.addEdge(2,3);
+	g.addEdge(3,4);
+	g.addEdge(4,5);
 
 
-	cout<<"Enter Edge in v1, v2 pairs:"<<endl;
-	for (int i = 0; i < edgeCount; ++i)
-	{
-		cin>>nodex;
-		cin>>nodey;
-		adjacency[nodex][nodey] = 1; //rowise mark
-		//adjacency[nodey][nodex] = 1; //columnwise mark
-	}
+	//print BFS order of given graph
+	g.dfs(0);
 
-	cout<<"adjacency matric : "<<endl;
-	for (int i = 0; i < nodeCount ; ++i)
-	{
-		for (int j = 0; j < nodeCount ; ++j)
-		{
-			cout<<adjacency[i][j]<<" ";;
-		}
-		cout<<endl;
-	}
 
-	dfs(nodes, adjacency, nodeCount, edgeCount);
-	bfs(nodes, adjacency, nodeCount, edgeCount);
-}
-
-void dfs(int nodes[], int** adjacency, int nodeCount, int edgeCount){
-
-	cout<<"Entered dfs"<<endl;
-
-	//visited array to prevent infinite looping
-	bool visited[ nodeCount ] = { false };
-
-	//call original dfs helper sub routine
-	dfsHelper(nodes, adjacency, visited, edgeCount, 2);
-
-}
-
-void dfsHelper(int nodes[], int** adjacency, bool visited[], int edgeCount, int cur){
-
-	//cout<<"Entered dfs Helper"<<endl;
-
-	if( visited[cur] ){ //current node already already visited
-		cout<<"already vsited : "<< visited[cur]<<endl;
-		return;
-	}
-
-	//mark current as visited
-	cout<<"node : "<<nodes[cur]<<endl;
-	visited[cur] = true;
-
-	for (int i = 0; i < edgeCount; ++i)
-	{
-		if( adjacency[cur][i] == 1 &&  visited[i] != true ){ //edge exists between cur node and itr node
-			dfsHelper(nodes, adjacency, visited, edgeCount, i );
-		}
-	}
-
-}
-
-void bfs(int nodes[], int** adjacency, int nodeCount, int edgeCount ){
-
-	//visited array to prevent infinite looping
-	bool visited[ nodeCount ] = { false } ;
-
-	//queue
-	Queue queue(nodeCount);
-
-	//call original bfs helper sub routine
-	bfsHelper(nodes, adjacency, visited, queue, nodeCount, 2);
-
-}
-
-void bfsHelper(int nodes[], int** adjacency, bool visited[], Queue& queue, int nodeCount, int cur){
-
-	cout<<"Entered bfs Helper"<<endl;
-	//mark cur node as visited and add to queue
-	visited[cur] = true;
-	queue.enqueue(cur);
-
-	while( queue.size() != 0 ){
-
-		//dequeue an elem, print and explore
-		int cur =  queue.dequeue();
-		cout<<"visited : "<<cur<<endl;
-
-		for (int i = 0; i < nodeCount ; ++i)
-		{
-			//if edge exist mark as visited if not
-			if( adjacency[cur][i] == 1 && visited[i] != true ){
-				visited[i] = true;
-				queue.enqueue(i);
-			}
-
-		}
-
-	}
-
+	return 0;
 }
